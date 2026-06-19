@@ -9,21 +9,28 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: ecommerce_test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+
     services:
-      postgres:
-        image: postgres:16
+      mysql:
+        image: mysql:8.0
         env:
-          POSTGRES_DB: ecommerce_test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: ecommerce_test
         ports:
-          - 5432:5432
-        # El job espera a que PostgreSQL esté listo antes de empezar
+          - 3306:3306
+        # El job espera a que MySQL esté listo antes de empezar
         options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Descargar el código
@@ -33,7 +40,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: pdo_pgsql, pgsql, mbstring, xml, curl, zip
+          extensions: pdo_mysql, mbstring, xml, curl, zip
           coverage: none
 
       - name: Instalar dependencias de Composer
@@ -52,12 +59,8 @@ jobs:
           npm ci
           npm run build
 
+      - name: Preparar base de datos
+        run: php artisan migrate --force
+
       - name: Ejecutar pruebas
         run: php artisan test
-        env:
-          DB_CONNECTION: pgsql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_DATABASE: ecommerce_test
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres
