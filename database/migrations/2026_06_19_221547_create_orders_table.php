@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('status');
-            $table->dateTime('subtotal', 10, 2)->nullable();
-            $table->dateTime('tax', 10, 2)->nullable();
-            $table->dateTime('total', 10, 2)->nullable();
+            $table->decimal('subtotal', 10, 2)->nullable();
+            $table->decimal('tax', 10, 2)->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             $table->string('shipping_address')->nullable();
             $table->timestamps();
         });
