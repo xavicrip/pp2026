@@ -74,4 +74,20 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Orden eliminada correctamente');
     }
+
+    public function clientIndex()
+    {
+        $orders = auth()->user()->orders()->latest()->get();
+
+        return view('client.orders.index', compact('orders'));
+    }
+
+    public function clientShow(Order $order)
+    {
+        $this->authorize('view', $order);
+
+        $order->load(['items.product']);
+
+        return view('client.orders.show', compact('order'));
+    }
 }
