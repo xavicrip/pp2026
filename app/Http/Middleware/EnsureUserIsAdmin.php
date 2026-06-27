@@ -8,14 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureUserIsAdmin
 {
-   
     public function handle(Request $request, Closure $next): Response
     {
-        
-        if (!$request->user()?->isAdmin()) {
+
+        if (! $request->user()?->isAdmin()) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         return $next($request);
     }
 }

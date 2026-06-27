@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 // proteger las rutas con el middleware admin
 Route::get('/', function () {
-    if (auth()->check()){
+    if (auth()->check()) {
         return auth()->user()->isAdmin() ? redirect()->route('categories.index') : redirect()->route('client.orders.index');
     }
+
     return redirect()->route('login');
 });
 

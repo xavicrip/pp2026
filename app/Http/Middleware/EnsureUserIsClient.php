@@ -8,15 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureUserIsClient
 {
-   
-    
     public function handle(Request $request, Closure $next): Response
     {
-        
-        if (!$request->user()?->isClient()) {
+
+        if (! $request->user()?->isClient()) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         return $next($request);
     }
 }

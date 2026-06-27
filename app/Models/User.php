@@ -20,6 +20,7 @@ class User extends Authenticatable
 
     // constantes de roles
     public const ROLE_ADMIN = 'admin';
+
     public const ROLE_CLIENT = 'client';
 
     /**
