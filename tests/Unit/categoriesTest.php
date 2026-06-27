@@ -2,13 +2,16 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\Category;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CategoriesTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_that_true_is_true(): void
     {
-
         // Crear una categoría
         $category = Category::factory()->create();
         $this->assertNotNull($category->name);
